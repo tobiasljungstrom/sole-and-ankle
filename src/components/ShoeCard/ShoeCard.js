@@ -31,6 +31,13 @@ const ShoeCard = ({
       ? 'new-release'
       : 'default'
 
+  const variantText =
+    variant === "on-sale"
+      ? "Sale"
+      : variant === "new-release"
+      ? "Just released!"
+      : "";
+
   return (
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
@@ -44,11 +51,28 @@ const ShoeCard = ({
         </Row>
         <Row>
           <ColorInfo>{pluralize("Color", numOfColors)}</ColorInfo>
+          <SalePrice>{salePrice && formatPrice(salePrice)}</SalePrice>
         </Row>
+        {variant !== "default" && (
+          <Variant variant={variant}>{variantText}</Variant>
+        )}
       </Wrapper>
     </Link>
   );
 };
+
+const Variant = styled.div`
+  position: absolute;
+  top: 12px;
+  right: -4px;
+  background-color: ${(p) =>
+    p.variant === "on-sale" ? COLORS.primary : COLORS.secondary};
+  color: ${COLORS.white};
+  font-weight: ${WEIGHTS.medium};
+  font-size: ${14 / 16}rem;
+  padding: 9px;
+  border-radius: 2px;
+`;
 
 const Link = styled.a`
   text-decoration: none;
@@ -56,7 +80,9 @@ const Link = styled.a`
   flex: 1 1 350px;
 `;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+  position: relative;
+`;
 
 const ImageWrapper = styled.div`
   position: relative;
@@ -68,6 +94,8 @@ const Image = styled.img`
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Name = styled.h3`
